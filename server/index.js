@@ -1,8 +1,8 @@
 require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
-const { default: mongoose } = require('mongoose');
-const moongoose = require('mongoose');
+const tasks = require('./routes/tasks');
+const mongoose = require('mongoose');
 const app = express();
 
 app.use(
@@ -11,12 +11,13 @@ app.use(
   })
 );
 app.use(express.json());
+app.use('/api', tasks);
 
 const connectMongoose = async () => {
   const port = process.env.PORT || 3000;
   try {
     await mongoose.connect(
-      `mongodb+srv://taskAdmin:${process.env.PASSWORD}@cluster0.fi5le.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+      `mongodb+srv://taskAdmin:${process.env.PASSWORD}@cluster0.fi5le.mongodb.net/tasks?retryWrites=true&w=majority&appName=Cluster0`
     );
 
     console.log('Mongoose called...');
