@@ -11,7 +11,7 @@ app.use(
   })
 );
 app.use(express.json());
-app.use('/api', tasks);
+app.use('/api/tasks', tasks);
 
 const connectMongoose = async () => {
   const port = process.env.PORT || 3000;
