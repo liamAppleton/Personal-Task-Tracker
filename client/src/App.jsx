@@ -5,11 +5,15 @@ import axios from 'axios';
 
 const App = () => {
   const [formData, setFormData] = useState({});
+  const [backendData, setBackendData] = useState([{}]);
 
   useEffect(() => {
     axios
       .get('http://localhost:3000/api/tasks')
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        console.log('Data fetched...');
+        setBackendData(response.data);
+      })
       .catch((error) => console.log(error));
   }, []);
 
@@ -23,7 +27,7 @@ const App = () => {
         <TaskForm getFormData={handleFormSubmission} />
       </div>
       <div>
-        <TaskTable />
+        <TaskTable storedTasks={backendData} backendData={backendData} />
       </div>
     </>
   );
