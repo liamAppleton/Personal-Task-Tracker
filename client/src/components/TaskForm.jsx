@@ -4,9 +4,10 @@ const TaskForm = ({ getFormData }) => {
   const [error, setError] = useState('');
   const taskRef = useRef(null);
   const descriptionRef = useRef(null);
+  const dateRef = useRef(null);
 
   const validateForm = ({ task, description, dueDate }) => {
-    const today = new Date.now();
+    const today = new Date();
     if (task.length < 3) return 'Task must be at least 3 characters.';
     if (task.length > 50) return 'Task cannot be more than 50 characters.';
     if (description.length < 10)
@@ -21,6 +22,7 @@ const TaskForm = ({ getFormData }) => {
     const inputs = {
       task: taskRef.current.value,
       description: descriptionRef.current.value,
+      dateDue: dateRef.current.value,
     };
 
     const validation = validateForm(inputs);
@@ -58,6 +60,17 @@ const TaskForm = ({ getFormData }) => {
             id="description"
             type="text"
             className="form-control"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="date-due" className="form-label">
+            Date due:{' '}
+          </label>
+          <input
+            ref={dateRef}
+            id="date-due"
+            type="date"
+            className="input-group date"
           />
         </div>
         <button type="submit" className="btn btn-primary">

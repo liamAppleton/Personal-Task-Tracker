@@ -7,7 +7,7 @@ const TaskTable = ({ backendData }) => {
 
   return (
     <>
-      <table className="table table-primary">
+      <table className="table table-info">
         <thead>
           <tr>
             <th>Task</th>
@@ -21,8 +21,10 @@ const TaskTable = ({ backendData }) => {
             return (
               <tr>
                 <td>{task.title}</td>
-                <td>{task.description}</td>
-                <td>{task.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/)}</td>
+                <td>{task.description && task.description}</td>
+                <td>
+                  {task.dueDate && task.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/)}
+                </td>
                 <td></td>
               </tr>
             );
