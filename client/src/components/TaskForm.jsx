@@ -6,10 +6,10 @@ const TaskForm = ({ getFormData }) => {
   const descriptionRef = useRef(null);
   const dateRef = useRef(null);
 
-  const validateForm = ({ task, description, dueDate }) => {
+  const validateForm = ({ title, description, dueDate }) => {
     const today = new Date();
-    if (task.length < 3) return 'Task must be at least 3 characters.';
-    if (task.length > 50) return 'Task cannot be more than 50 characters.';
+    if (title.length < 3) return 'Task must be at least 3 characters.';
+    if (title.length > 50) return 'Task cannot be more than 50 characters.';
     if (description.length < 10)
       return 'Description must be at least 10 characters.';
     if (description.length > 70)
@@ -20,9 +20,9 @@ const TaskForm = ({ getFormData }) => {
 
   const handleSubmit = () => {
     const inputs = {
-      task: taskRef.current.value,
+      title: taskRef.current.value,
       description: descriptionRef.current.value,
-      dateDue: dateRef.current.value,
+      dueDate: dateRef.current.value,
     };
 
     const validation = validateForm(inputs);
