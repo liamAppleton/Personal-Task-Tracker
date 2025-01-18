@@ -1,17 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-
-const { validateTask } = require('../utils');
-
-const Task = new mongoose.model(
-  'Task',
-  mongoose.Schema({
-    title: { type: String, minlength: 3, maxlength: 50, required: true },
-    description: { type: String, minlength: 10, maxlength: 70 },
-    status: { type: String },
-  })
-);
+const { Task, validateTask } = require('../models/task');
 
 router.get('/', async (req, res) => {
   const tasks = await Task.find();
