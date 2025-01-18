@@ -26,6 +26,7 @@ router.post('/', async (req, res) => {
     let task = new Task({
       title: req.body.title,
       description: req.body.description,
+      dueDate: req.body.dueDate,
       status: 'unfinished',
     });
     task = await task.save();

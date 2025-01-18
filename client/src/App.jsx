@@ -27,7 +27,7 @@ const App = () => {
         <TaskForm getFormData={handleFormSubmission} />
       </div>
       <div>
-        <TaskTable storedTasks={backendData} backendData={backendData} />
+        <TaskTable backendData={backendData} />
       </div>
     </>
   );

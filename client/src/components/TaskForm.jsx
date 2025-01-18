@@ -5,13 +5,15 @@ const TaskForm = ({ getFormData }) => {
   const taskRef = useRef(null);
   const descriptionRef = useRef(null);
 
-  const validateForm = ({ task, description }) => {
+  const validateForm = ({ task, description, dueDate }) => {
+    const today = new Date.now();
     if (task.length < 3) return 'Task must be at least 3 characters.';
     if (task.length > 50) return 'Task cannot be more than 50 characters.';
     if (description.length < 10)
       return 'Description must be at least 10 characters.';
     if (description.length > 70)
       return 'Description cannot be more than 70 characters.';
+    if (dueDate && dueDate < today) return 'Date cannot be in the past.';
     return 'valid';
   };
 

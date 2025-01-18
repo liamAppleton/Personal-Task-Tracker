@@ -13,7 +13,7 @@ const TaskTable = ({ backendData }) => {
             <th>Task</th>
             <th>Description</th>
             <th>Date due</th>
-            <th></th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -22,6 +22,8 @@ const TaskTable = ({ backendData }) => {
               <tr>
                 <td>{task.title}</td>
                 <td>{task.description}</td>
+                <td>{task.dueDate}</td>
+                <td></td>
               </tr>
             );
           })}
