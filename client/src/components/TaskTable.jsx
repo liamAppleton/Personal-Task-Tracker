@@ -22,7 +22,7 @@ const TaskTable = ({ backendData }) => {
               <tr>
                 <td>{task.title}</td>
                 <td>{task.description}</td>
-                <td>{task.dueDate}</td>
+                <td>{task.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/)}</td>
                 <td></td>
               </tr>
             );
