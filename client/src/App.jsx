@@ -7,6 +7,7 @@ const App = () => {
   const [appInitialised, setInitialised] = useState(false);
   const [formData, setFormData] = useState({});
   const [backendData, setBackendData] = useState([{}]);
+  const [finishedTasks, setFinishedTasks] = useState([{}]);
 
   const fetchData = async () => {
     await axios
@@ -46,7 +47,7 @@ const App = () => {
         <TaskForm getFormData={handleFormSubmission} />
       </div>
       <div>
-        <TaskTable backendData={backendData} />
+        <TaskTable backendData={backendData} finishedTasks={finishedTasks} />
       </div>
     </>
   );
