@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
 
 const TaskTable = ({ backendData }) => {
-  useEffect(() => {
-    console.log(backendData);
-  }, [backendData]);
-
   return (
     <>
       <table className="table table-info">
@@ -19,7 +15,7 @@ const TaskTable = ({ backendData }) => {
         <tbody>
           {backendData.map((task) => {
             return (
-              <tr>
+              <tr key={task._id || task.title}>
                 <td>{task.title}</td>
                 <td>{task.description && task.description}</td>
                 <td>
