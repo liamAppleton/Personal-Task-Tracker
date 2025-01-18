@@ -1,12 +1,13 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 const TaskForm = () => {
+  const [error, setError] = useState('');
   const taskRef = useRef(null);
   const descriptionRef = useRef(null);
 
   const validateForm = ({ task, description }) => {
     if (task.length < 3) return 'Task must be at least 3 characters.';
-    if (task.length > 3) return 'Task cannot be more than 50 characters.';
+    if (task.length > 50) return 'Task cannot be more than 50 characters.';
     if (description.length < 10)
       return 'Description must be at least 10 characters.';
     if (description.length > 70)
@@ -19,6 +20,17 @@ const TaskForm = () => {
       task: taskRef.current.value,
       description: descriptionRef.current.value,
     };
+    console.log(inputs);
+
+    const validation = validateForm(inputs);
+    if (validation !== 'valid') {
+      setError(validation);
+      return;
+    }
+
+    setError('');
+
+    console.log(validation);
   };
 
   return (
@@ -50,6 +62,7 @@ const TaskForm = () => {
         <button type="submit" className="btn btn-primary">
           Add
         </button>
+        {error && <p className="text-danger">{error}</p>}
       </form>
     </>
   );
