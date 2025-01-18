@@ -23,6 +23,7 @@ const TaskForm = ({ getFormData }) => {
       title: taskRef.current.value,
       description: descriptionRef.current.value,
       dueDate: dateRef.current.value,
+      status: 'unfinished',
     };
 
     const validation = validateForm(inputs);

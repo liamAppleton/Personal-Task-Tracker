@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-const TaskTable = ({ backendData, finishedTasks }) => {
-  console.log(finishedTasks);
+const TaskTable = ({ unfinishedTasks, finishedTasks }) => {
   return (
     <>
       <div className="mb-3">
@@ -17,7 +16,7 @@ const TaskTable = ({ backendData, finishedTasks }) => {
           </tr>
         </thead>
         <tbody>
-          {backendData.map((task) => {
+          {unfinishedTasks.map((task) => {
             return (
               <tr key={task._id || task.title}>
                 <td>{task.title}</td>

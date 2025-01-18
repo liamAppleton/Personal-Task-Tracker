@@ -6,18 +6,8 @@ import axios from 'axios';
 const App = () => {
   const [appInitialised, setInitialised] = useState(false);
   const [formData, setFormData] = useState({});
-  const [backendData, setBackendData] = useState([{}]);
   const [finishedTasks, setFinishedTasks] = useState([{}]);
-
-  const fetchData = async () => {
-    await axios
-      .get('http://localhost:3000/api/tasks')
-      .then((response) => {
-        console.log('Data fetched...');
-        setBackendData(response.data);
-      })
-      .catch((error) => console.log(error));
-  };
+  const [unfinishedTasks, setUnfinishedTasks] = useState([{}]);
 
   useEffect(() => {
     fetchData();
@@ -37,6 +27,19 @@ const App = () => {
     fetchData();
   }, [formData]);
 
+  const fetchData = async () => {
+    await axios
+      .get('http://localhost:3000/api/tasks')
+      .then((response) => {
+        console.log('Data fetched...');
+        setFinishedTasks(response.data.filter((t) => t.status === 'finished'));
+        setUnfinishedTasks(
+          response.data.filter((t) => t.status === 'unfinished')
+        );
+      })
+      .catch((error) => console.log(error));
+  };
+
   const handleFormSubmission = (data) => {
     setFormData(data);
   };
@@ -47,7 +50,10 @@ const App = () => {
         <TaskForm getFormData={handleFormSubmission} />
       </div>
       <div>
-        <TaskTable backendData={backendData} finishedTasks={finishedTasks} />
+        <TaskTable
+          unfinishedTasks={unfinishedTasks}
+          finishedTasks={finishedTasks}
+        />
       </div>
     </>
   );
