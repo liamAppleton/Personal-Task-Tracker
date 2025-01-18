@@ -21,7 +21,12 @@ const TaskTable = ({ backendData }) => {
                 <td>
                   {task.dueDate && task.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/)}
                 </td>
-                <td></td>
+                <td>
+                  <div>
+                    <button className="btn btn-success me-2">Done</button>
+                    <button className="btn btn-secondary">Edit</button>
+                  </div>
+                </td>
               </tr>
             );
           })}

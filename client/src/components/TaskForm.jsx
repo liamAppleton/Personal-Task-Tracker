@@ -37,8 +37,6 @@ const TaskForm = ({ getFormData }) => {
       if (inputs[item] === '') delete inputs[item];
     }
 
-    console.log(inputs);
-
     getFormData(inputs);
   };
 
