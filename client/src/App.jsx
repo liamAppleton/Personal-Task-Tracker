@@ -1,8 +1,10 @@
+import TaskForm from './components/TaskForm';
+
 const App = () => {
   return (
-    <div className="mb-3">
-      <button className="btn btn-primary">Click</button>
-    </div>
+    <>
+      <TaskForm />
+    </>
   );
 };
 
