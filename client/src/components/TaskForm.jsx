@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-const TaskForm = () => {
+const TaskForm = ({ getFormData }) => {
   const [error, setError] = useState('');
   const taskRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -20,7 +20,6 @@ const TaskForm = () => {
       task: taskRef.current.value,
       description: descriptionRef.current.value,
     };
-    console.log(inputs);
 
     const validation = validateForm(inputs);
     if (validation !== 'valid') {
@@ -30,7 +29,7 @@ const TaskForm = () => {
 
     setError('');
 
-    console.log(validation);
+    getFormData(inputs);
   };
 
   return (
