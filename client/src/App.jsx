@@ -57,10 +57,11 @@ const App = () => {
     setFormData(data);
   };
 
-  const handlePutBtnClick = (data) => {
-    console.log(data);
+  const buttonClicked = (data, button) => {
     setId(data._id);
-    setFormData({ status: 'finished' });
+
+    const status = button === 'done' ? 'finished' : 'unfinished';
+    setFormData({ status: status });
   };
 
   return (
@@ -72,7 +73,7 @@ const App = () => {
         <TaskTable
           unfinishedTasks={unfinishedTasks}
           finishedTasks={finishedTasks}
-          putButtonClicked={handlePutBtnClick}
+          buttonClicked={buttonClicked}
         />
       </div>
     </>

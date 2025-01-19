@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TaskTable = ({ unfinishedTasks, finishedTasks, putButtonClicked }) => {
+const TaskTable = ({ unfinishedTasks, finishedTasks, buttonClicked }) => {
   return (
     <>
       <div className="mb-3">
@@ -30,7 +30,7 @@ const TaskTable = ({ unfinishedTasks, finishedTasks, putButtonClicked }) => {
                       <button className="btn btn-secondary me-2">Edit</button>
                       <button
                         className="btn btn-success"
-                        onClick={() => putButtonClicked(task)}
+                        onClick={() => buttonClicked(task, 'done')}
                       >
                         Done
                       </button>
@@ -70,7 +70,12 @@ const TaskTable = ({ unfinishedTasks, finishedTasks, putButtonClicked }) => {
                   </td>
                   <td>
                     <div>
-                      <button className="btn btn-warning me-2">Undo</button>
+                      <button
+                        className="btn btn-warning me-2"
+                        onClick={() => buttonClicked(task, 'undo')}
+                      >
+                        Undo
+                      </button>
                       <button className="btn btn-danger">Delete</button>
                     </div>
                   </td>
