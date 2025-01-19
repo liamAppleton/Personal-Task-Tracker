@@ -28,18 +28,6 @@ const App = () => {
     fetchData();
   }, [formData]);
 
-  useEffect(() => {
-    if (!appInitialised) {
-      setInitialised(true);
-      return;
-    }
-
-    axios
-      .put(`http://localhost:3000/api/tasks/${taskId}`, formData)
-      .then((response) => console.log('Put request recieved ' + response))
-      .then((error) => console.log('Put request unsuccessful: ' + error));
-  }, [taskId]);
-
   const fetchData = async () => {
     await axios
       .get('http://localhost:3000/api/tasks', formData)
@@ -58,10 +46,16 @@ const App = () => {
   };
 
   const buttonClicked = (data, button) => {
-    setId(data._id);
-
     const status = button === 'done' ? 'finished' : 'unfinished';
-    setFormData({ status: status });
+    const updatedData = { status: status };
+
+    axios
+      .put(`http://localhost:3000/api/tasks/${data._id}`, updatedData)
+      .then((response) => {
+        fetchData();
+        console.log('Put request recieved ' + response);
+      })
+      .catch((error) => console.log('Put request unsuccessful: ' + error));
   };
 
   const deleteClicked = (data) => {
