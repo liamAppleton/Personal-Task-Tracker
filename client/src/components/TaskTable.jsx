@@ -1,12 +1,12 @@
 import React from 'react';
 
-const TaskTable = ({ unfinishedTasks, finishedTasks }) => {
+const TaskTable = ({ unfinishedTasks, finishedTasks, putButtonClicked }) => {
   return (
     <>
       <div className="mb-3">
         <h1>To do</h1>
       </div>
-      {unfinishedTasks.length > 1 ? (
+      {unfinishedTasks.length > 0 ? (
         <table className="table table-info">
           <thead>
             <tr>
@@ -28,7 +28,12 @@ const TaskTable = ({ unfinishedTasks, finishedTasks }) => {
                   <td>
                     <div>
                       <button className="btn btn-secondary me-2">Edit</button>
-                      <button className="btn btn-success">Done</button>
+                      <button
+                        className="btn btn-success"
+                        onClick={() => putButtonClicked(task)}
+                      >
+                        Done
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -44,7 +49,7 @@ const TaskTable = ({ unfinishedTasks, finishedTasks }) => {
         <h1>Completed</h1>
       </div>
 
-      {finishedTasks.length > 1 ? (
+      {finishedTasks.length > 0 ? (
         <table className="table table-success">
           <thead>
             <tr>
@@ -55,7 +60,7 @@ const TaskTable = ({ unfinishedTasks, finishedTasks }) => {
             </tr>
           </thead>
           <tbody>
-            {finishedTasks.slice(1).map((task) => {
+            {finishedTasks.map((task) => {
               return (
                 <tr key={task._id || task.title}>
                   <td>{task.title}</td>
