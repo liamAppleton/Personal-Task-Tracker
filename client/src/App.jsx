@@ -6,9 +6,9 @@ import axios from 'axios';
 const App = () => {
   const [appInitialised, setInitialised] = useState(false);
   const [formData, setFormData] = useState({});
+  const [editData, setEditData] = useState({});
   const [finishedTasks, setFinishedTasks] = useState([{}]);
   const [unfinishedTasks, setUnfinishedTasks] = useState([{}]);
-  const [taskId, setId] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -63,15 +63,19 @@ const App = () => {
       .delete(`http://localhost:3000/api/tasks/${data._id}`)
       .then((response) => {
         fetchData();
-        console.log('Item deleted succesully.');
+        console.log('Item deleted successfully.');
       })
       .catch((error) => console.log('Unable to delete: ' + error));
+  };
+
+  const editClicked = (data) => {
+    setEditData(data);
   };
 
   return (
     <>
       <div className="mb-5">
-        <TaskForm getFormData={handleFormSubmission} />
+        <TaskForm getFormData={handleFormSubmission} editData={editData} />
       </div>
       <div>
         <TaskTable
@@ -79,6 +83,7 @@ const App = () => {
           finishedTasks={finishedTasks}
           buttonClicked={buttonClicked}
           deleteClicked={deleteClicked}
+          editClicked={editClicked}
         />
       </div>
     </>

@@ -5,6 +5,7 @@ const TaskTable = ({
   finishedTasks,
   buttonClicked,
   deleteClicked,
+  editClicked,
 }) => {
   return (
     <>
@@ -32,7 +33,12 @@ const TaskTable = ({
                   </td>
                   <td>
                     <div>
-                      <button className="btn btn-secondary me-2">Edit</button>
+                      <button
+                        className="btn btn-secondary me-2"
+                        onClick={() => editClicked(task)}
+                      >
+                        Edit
+                      </button>
                       <button
                         className="btn btn-success"
                         onClick={() => buttonClicked(task, 'done')}

@@ -7,7 +7,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'http://localhost:5174', // replace with react url
+    origin: 'http://localhost:5175', // replace with react url
   })
 );
 app.use(express.json());
