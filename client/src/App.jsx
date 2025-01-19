@@ -41,21 +41,28 @@ const App = () => {
       .catch((error) => console.log(error));
   };
 
-  const handleFormSubmission = (data) => {
-    setFormData(data);
-  };
-
-  const buttonClicked = (data, button) => {
-    const status = button === 'done' ? 'finished' : 'unfinished';
-    const updatedData = { status: status };
-
-    axios
+  const axiosPut = async (data, updatedData) => {
+    await axios
       .put(`http://localhost:3000/api/tasks/${data._id}`, updatedData)
       .then((response) => {
         fetchData();
         console.log('Put request recieved ' + response);
       })
       .catch((error) => console.log('Put request unsuccessful: ' + error));
+  };
+
+  const handleFormSubmission = (data, updatedData = {}) => {
+    if (data.hasOwnProperty('amended')) {
+      axiosPut(data, updatedData);
+    }
+
+    setFormData(data);
+  };
+
+  const buttonClicked = (data, button) => {
+    const status = button === 'done' ? 'finished' : 'unfinished';
+    const updatedData = { status: status };
+    axiosPut(data, updatedData);
   };
 
   const deleteClicked = (data) => {

@@ -8,12 +8,9 @@ const TaskForm = ({ getFormData, editData }) => {
   const dateRef = useRef(null);
 
   useEffect(() => {
-    console.log(Object.keys(editData));
-  }, [editData]);
-
-  useEffect(() => {
     if (editData._id) {
       setEdit(true);
+      editData.amended = true;
       taskRef.current.value = editData.title;
       descriptionRef.current.value = editData.description;
       dateRef.current.value = editData.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/);
@@ -52,7 +49,8 @@ const TaskForm = ({ getFormData, editData }) => {
       if (inputs[item] === '') delete inputs[item];
     }
 
-    getFormData(inputs);
+    if (edit) getFormData(editData, inputs);
+    else getFormData(inputs);
     setEdit(false);
   };
 
