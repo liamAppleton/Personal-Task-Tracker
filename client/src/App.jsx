@@ -64,6 +64,16 @@ const App = () => {
     setFormData({ status: status });
   };
 
+  const deleteClicked = (data) => {
+    axios
+      .delete(`http://localhost:3000/api/tasks/${data._id}`)
+      .then((response) => {
+        fetchData();
+        console.log('Item deleted succesully.');
+      })
+      .catch((error) => console.log('Unable to delete: ' + error));
+  };
+
   return (
     <>
       <div className="mb-5">
@@ -74,6 +84,7 @@ const App = () => {
           unfinishedTasks={unfinishedTasks}
           finishedTasks={finishedTasks}
           buttonClicked={buttonClicked}
+          deleteClicked={deleteClicked}
         />
       </div>
     </>

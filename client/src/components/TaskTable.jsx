@@ -1,6 +1,11 @@
 import React from 'react';
 
-const TaskTable = ({ unfinishedTasks, finishedTasks, buttonClicked }) => {
+const TaskTable = ({
+  unfinishedTasks,
+  finishedTasks,
+  buttonClicked,
+  deleteClicked,
+}) => {
   return (
     <>
       <div className="mb-3">
@@ -76,7 +81,12 @@ const TaskTable = ({ unfinishedTasks, finishedTasks, buttonClicked }) => {
                       >
                         Undo
                       </button>
-                      <button className="btn btn-danger">Delete</button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => deleteClicked(task)}
+                      >
+                        Delete
+                      </button>
                     </div>
                   </td>
                 </tr>
