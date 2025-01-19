@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const TaskForm = ({ getFormData, editData }) => {
   const [error, setError] = useState('');
+  const [edit, setEdit] = useState(false);
   const taskRef = useRef(null);
   const descriptionRef = useRef(null);
   const dateRef = useRef(null);
@@ -12,6 +13,7 @@ const TaskForm = ({ getFormData, editData }) => {
 
   useEffect(() => {
     if (editData._id) {
+      setEdit(true);
       taskRef.current.value = editData.title;
       descriptionRef.current.value = editData.description;
       dateRef.current.value = editData.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/);
@@ -51,6 +53,7 @@ const TaskForm = ({ getFormData, editData }) => {
     }
 
     getFormData(inputs);
+    setEdit(false);
   };
 
   return (
@@ -91,7 +94,7 @@ const TaskForm = ({ getFormData, editData }) => {
           />
         </div>
         <button type="submit" className="btn btn-primary">
-          Add
+          {edit ? 'update' : 'add'}
         </button>
         {error && <p className="text-danger">{error}</p>}
       </form>
