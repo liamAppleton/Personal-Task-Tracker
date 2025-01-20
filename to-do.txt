@@ -1,0 +1,1 @@
+Fix post reqest bug when edit is confirmed.

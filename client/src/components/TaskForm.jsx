@@ -3,17 +3,26 @@ import { useEffect, useRef, useState } from 'react';
 const TaskForm = ({ getFormData, editData }) => {
   const [error, setError] = useState('');
   const [edit, setEdit] = useState(false);
+  const [localEditData, setLocalEditData] = useState({});
+  const [keyProp, setKey] = useState(0);
   const taskRef = useRef(null);
   const descriptionRef = useRef(null);
   const dateRef = useRef(null);
 
   useEffect(() => {
-    if (editData._id) {
+    if (editData && editData._id) {
+      console.log(editData);
+      setError('');
       setEdit(true);
-      editData.amended = true;
-      taskRef.current.value = editData.title;
-      descriptionRef.current.value = editData.description;
-      dateRef.current.value = editData.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/);
+
+      const result = { ...editData, amended: true };
+      setLocalEditData(result);
+      taskRef.current.value = result.title;
+      descriptionRef.current.value = result.description;
+      dateRef.current.value = result.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/);
+    } else {
+      setEdit(false);
+      setLocalEditData({});
     }
   }, [editData]);
 
@@ -49,14 +58,26 @@ const TaskForm = ({ getFormData, editData }) => {
       if (inputs[item] === '') delete inputs[item];
     }
 
-    if (edit) getFormData(editData, inputs);
+    if (edit) getFormData(localEditData, inputs);
     else getFormData(inputs);
+
     setEdit(false);
+  };
+
+  const cancelClicked = () => {
+    taskRef.current.value = '';
+    descriptionRef.current.value = '';
+    dateRef.current.value = '';
+
+    setEdit(false);
+    setLocalEditData({});
+    setKey((prevKey) => prevKey + 1);
   };
 
   return (
     <>
       <form
+        key={keyProp}
         onSubmit={(e) => {
           e.preventDefault();
 
@@ -91,9 +112,21 @@ const TaskForm = ({ getFormData, editData }) => {
             className="input-group date"
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          {edit ? 'update' : 'add'}
-        </button>
+        <div className="d-flex flex-d-row">
+          <button type="submit" className="btn btn-primary me-2">
+            {edit ? 'update' : 'add'}
+          </button>
+          {edit && (
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={cancelClicked}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+
         {error && <p className="text-danger">{error}</p>}
       </form>
     </>
