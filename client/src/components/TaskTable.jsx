@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const TaskTable = ({
   unfinishedTasks,
@@ -7,6 +7,15 @@ const TaskTable = ({
   deleteClicked,
   editClicked,
 }) => {
+  const [edit, setEdit] = useState({
+    _id: 0,
+    edit: false,
+  });
+
+  useEffect(() => {
+    console.log('Unfinished tasks: ', unfinishedTasks);
+  }, [unfinishedTasks]);
+
   return (
     <>
       <div className="mb-3">
@@ -24,24 +33,67 @@ const TaskTable = ({
           </thead>
           <tbody>
             {unfinishedTasks.map((task) => {
+              const formattedDate =
+                task.dueDate === undefined ? '' : task.dueDate;
               return (
                 <tr key={task._id || task.title}>
-                  <td>{task.title}</td>
-                  <td>{task.description && task.description}</td>
                   <td>
-                    {task.dueDate && task.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/)}
+                    {edit.edit && edit._id === task._id ? (
+                      <input
+                        className="form-control"
+                        type="text"
+                        value={task.title}
+                      />
+                    ) : (
+                      task.title
+                    )}
+                  </td>
+                  <td>
+                    {task.description ? (
+                      edit.edit && edit._id === task._id ? (
+                        <input
+                          className="form-control"
+                          type="text"
+                          value={task.description}
+                        />
+                      ) : (
+                        task.description
+                      )
+                    ) : (
+                      ''
+                    )}
+                  </td>
+                  <td>
+                    {formattedDate ? (
+                      edit.edit && edit._id === task._id ? (
+                        <input
+                          className="form-control"
+                          type="date"
+                          value={formattedDate}
+                        />
+                      ) : (
+                        formattedDate
+                      )
+                    ) : (
+                      ''
+                    )}
                   </td>
                   <td>
                     <div>
                       <button
                         className="btn btn-secondary me-2"
-                        onClick={() => editClicked(task)}
+                        onClick={() => {
+                          setEdit({ _id: task._id, edit: true });
+                          editClicked(task);
+                        }}
                       >
                         Edit
                       </button>
                       <button
                         className="btn btn-success"
-                        onClick={() => buttonClicked(task, 'done')}
+                        onClick={() => {
+                          buttonClicked(task, 'done');
+                        }}
                       >
                         Done
                       </button>

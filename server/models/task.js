@@ -3,12 +3,26 @@ const Joi = require('joi');
 
 const Task = new mongoose.model(
   'Task',
-  mongoose.Schema({
-    title: { type: String, minlength: 3, maxlength: 50, required: true },
-    description: { type: String, minlength: 10, maxlength: 70 },
-    dueDate: Date,
-    status: { type: String },
-  })
+  mongoose.Schema(
+    {
+      title: { type: String, minlength: 3, maxlength: 50, required: true },
+      description: { type: String, minlength: 10, maxlength: 70 },
+      dueDate: {
+        type: Date,
+        get: (value) => {
+          return value ? value.toISOString().split('T')[0] : null; // Format YYYY-MM-DD
+        },
+        set: (value) => {
+          return value ? new Date(value) : null; // Convert input to Date object
+        },
+      },
+      status: { type: String },
+    },
+    {
+      toJSON: { getters: true }, // Ensure getters are used in JSON output
+      toObject: { getters: true }, // Ensure getters are used when converting to an object
+    }
+  )
 );
 
 const validateTask = (task) => {

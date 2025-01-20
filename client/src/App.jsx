@@ -19,10 +19,10 @@ const App = () => {
       setInitialised(true);
       return;
     }
-
+    console.log('Post: ', formData);
     axios
       .post('http://localhost:3000/api/tasks', formData)
-      .then((response) => console.log('Post recieved ' + response))
+      .then((response) => console.log('Post recieved ', response))
       .catch((error) => console.log('Post unsuccessful: ' + error));
 
     fetchData();
@@ -55,7 +55,7 @@ const App = () => {
     if (data.hasOwnProperty('amended')) {
       axiosPut(data, updatedData);
     }
-
+    console.log('App formData upon submission: ', data);
     setFormData(data);
   };
 

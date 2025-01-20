@@ -3,26 +3,19 @@ import { useEffect, useRef, useState } from 'react';
 const TaskForm = ({ getFormData, editData }) => {
   const [error, setError] = useState('');
   const [edit, setEdit] = useState(false);
-  const [localEditData, setLocalEditData] = useState({});
-  const [keyProp, setKey] = useState(0);
   const taskRef = useRef(null);
   const descriptionRef = useRef(null);
   const dateRef = useRef(null);
 
   useEffect(() => {
     if (editData && editData._id) {
-      console.log(editData);
       setError('');
       setEdit(true);
 
-      const result = { ...editData, amended: true };
-      setLocalEditData(result);
-      taskRef.current.value = result.title;
-      descriptionRef.current.value = result.description;
-      dateRef.current.value = result.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/);
-    } else {
-      setEdit(false);
-      setLocalEditData({});
+      editData.amended = true;
+      taskRef.current.value = editData.title;
+      descriptionRef.current.value = editData.description;
+      dateRef.current.value = editData.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/);
     }
   }, [editData]);
 
@@ -30,9 +23,9 @@ const TaskForm = ({ getFormData, editData }) => {
     const today = new Date();
     if (title.length < 3) return 'Task must be at least 3 characters.';
     if (title.length > 50) return 'Task cannot be more than 50 characters.';
-    if (description.length < 10)
+    if (description && description.length < 10)
       return 'Description must be at least 10 characters.';
-    if (description.length > 70)
+    if (description && description.length > 70)
       return 'Description cannot be more than 70 characters.';
     if (dueDate && dueDate < today) return 'Date cannot be in the past.';
     return 'valid';
@@ -42,7 +35,7 @@ const TaskForm = ({ getFormData, editData }) => {
     const inputs = {
       title: taskRef.current.value,
       description: descriptionRef.current.value,
-      dueDate: dateRef.current.value,
+      dueDate: new Date(dateRef.current.value).toISOString().split('T')[0],
       status: 'unfinished',
     };
 
@@ -58,10 +51,13 @@ const TaskForm = ({ getFormData, editData }) => {
       if (inputs[item] === '') delete inputs[item];
     }
 
-    if (edit) getFormData(localEditData, inputs);
+    if (edit) getFormData(editData, inputs);
     else getFormData(inputs);
 
     setEdit(false);
+    taskRef.current.value = '';
+    descriptionRef.current.value = '';
+    dateRef.current.value = '';
   };
 
   const cancelClicked = () => {
@@ -70,14 +66,11 @@ const TaskForm = ({ getFormData, editData }) => {
     dateRef.current.value = '';
 
     setEdit(false);
-    setLocalEditData({});
-    setKey((prevKey) => prevKey + 1);
   };
 
   return (
     <>
       <form
-        key={keyProp}
         onSubmit={(e) => {
           e.preventDefault();
 
@@ -118,7 +111,7 @@ const TaskForm = ({ getFormData, editData }) => {
           </button>
           {edit && (
             <button
-              type="button"
+              type="reset"
               className="btn btn-danger"
               onClick={cancelClicked}
             >

@@ -3,11 +3,12 @@ const cors = require('cors');
 const express = require('express');
 const tasks = require('./routes/tasks');
 const mongoose = require('mongoose');
+const { Task } = require('./models/task');
 const app = express();
 
 app.use(
   cors({
-    origin: 'http://localhost:5175', // replace with react url
+    origin: 'http://localhost:5173', // replace with react url
   })
 );
 app.use(express.json());
