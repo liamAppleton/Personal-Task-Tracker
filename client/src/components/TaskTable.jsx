@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import { description } from 'joi/lib/types/alternatives';
+import React, { useState } from 'react';
 
 const TaskTable = ({
   unfinishedTasks,
   finishedTasks,
   buttonClicked,
   deleteClicked,
-  editClicked,
+  handleUpdate,
 }) => {
   const [edit, setEdit] = useState({
     _id: 0,
     edit: false,
   });
 
-  useEffect(() => {
-    console.log('Unfinished tasks: ', unfinishedTasks);
-  }, [unfinishedTasks]);
+  const handleKeyDown = (data) => {
+    console.log('handkeydown func: ', data);
+    handleUpdate(data);
 
-  const handleEditClick = (data) => {
-    if (edit.edit) {
-      const task = unfinishedTasks.find((t) => t._id === data._id);
-      unfinishedTasks.task = { ...data, amended: true };
-      setEdit({ _id: 0, edit: false });
-      return;
-    }
-
-    setEdit({ _id: data._id, edit: true, key: '' });
+    setEdit({ _id: 0, edit: false, key: '' });
   };
 
   return (
@@ -61,9 +54,13 @@ const TaskTable = ({
                         onChange={(e) => {
                           task.title = e.target.value;
                         }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') handleEditClick(task);
-                        }}
+                        onKeyDown={(e) =>
+                          e.key === 'Enter' &&
+                          handleKeyDown({
+                            updated: { title: task.title },
+                            _id: task.id,
+                          })
+                        }
                       />
                     ) : (
                       task.title
@@ -78,26 +75,26 @@ const TaskTable = ({
                       });
                     }}
                   >
-                    {task.description ? (
-                      edit.edit &&
-                      edit._id === task._id &&
-                      edit.key === task.description ? (
-                        <input
-                          className="form-control"
-                          type="text"
-                          placeholder={task.description}
-                          onChange={(e) => {
-                            task.description = e.target.value;
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') handleEditClick(task);
-                          }}
-                        />
-                      ) : (
-                        task.description
-                      )
+                    {edit.edit &&
+                    edit._id === task._id &&
+                    edit.key === task.description ? (
+                      <input
+                        className="form-control"
+                        type="text"
+                        placeholder={task.description}
+                        onChange={(e) => {
+                          task.description = e.target.value;
+                        }}
+                        onKeyDown={(e) =>
+                          e.key === 'Enter' &&
+                          handleKeyDown({
+                            updated: { description: task.description },
+                            _id: task.id,
+                          })
+                        }
+                      />
                     ) : (
-                      ''
+                      task.description
                     )}
                   </td>
                   <td
@@ -105,26 +102,26 @@ const TaskTable = ({
                       setEdit({ _id: task.id, edit: true, key: task.dueDate });
                     }}
                   >
-                    {task.dueDate ? (
-                      edit.edit &&
-                      edit._id === task._id &&
-                      edit.key === task.dueDate ? (
-                        <input
-                          className="form-control"
-                          type="date"
-                          value={task.dueDate}
-                          onChange={(e) => {
-                            task.dueDate = e.target.value;
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') handleEditClick(task);
-                          }}
-                        />
-                      ) : (
-                        task.dueDate
-                      )
+                    {edit.edit &&
+                    edit._id === task._id &&
+                    edit.key === task.dueDate ? (
+                      <input
+                        className="form-control"
+                        type="date"
+                        value={task.dueDate}
+                        onChange={(e) => {
+                          task.dueDate = e.target.value;
+                        }}
+                        onKeyDown={(e) =>
+                          e.key === 'Enter' &&
+                          handleKeyDown({
+                            updated: { dueDate: task.dueDate },
+                            _id: task.id,
+                          })
+                        }
+                      />
                     ) : (
-                      ''
+                      task.dueDate
                     )}
                   </td>
                   <td>

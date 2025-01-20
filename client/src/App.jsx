@@ -40,7 +40,8 @@ const App = () => {
       .catch((error) => console.log(error));
   };
 
-  const axiosPut = async (data, updatedData) => {
+  const axiosPut = async (data, updatedData = {}) => {
+    console.log('Axios put func: ', data, updatedData);
     await axios
       .put(`http://localhost:3000/api/tasks/${data._id}`, updatedData)
       .then((response) => {
@@ -50,10 +51,7 @@ const App = () => {
       .catch((error) => console.log('Put request unsuccessful: ' + error));
   };
 
-  const handleFormSubmission = (data, updatedData = {}) => {
-    if (data.hasOwnProperty('amended')) {
-      axiosPut(data, updatedData);
-    }
+  const handleFormSubmission = (data) => {
     console.log('App formData upon submission: ', data);
     setFormData(data);
   };
@@ -74,6 +72,11 @@ const App = () => {
       .catch((error) => console.log('Unable to delete: ' + error));
   };
 
+  const handleUpdate = (data) => {
+    console.log('Handle update func: ', data);
+    axiosPut(data, data.updated);
+  };
+
   return (
     <>
       <div className="mb-5">
@@ -85,6 +88,7 @@ const App = () => {
           finishedTasks={finishedTasks}
           buttonClicked={buttonClicked}
           deleteClicked={deleteClicked}
+          handleUpdate={handleUpdate}
         />
       </div>
     </>
