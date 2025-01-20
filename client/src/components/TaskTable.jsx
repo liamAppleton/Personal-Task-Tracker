@@ -130,15 +130,6 @@ const TaskTable = ({
                   <td>
                     <div>
                       <button
-                        className="btn btn-secondary me-2"
-                        onClick={() => {
-                          handleEditClick(task);
-                          editClicked(task);
-                        }}
-                      >
-                        {edit.edit ? 'Update' : 'Edit'}
-                      </button>
-                      <button
                         className="btn btn-success"
                         onClick={() => {
                           buttonClicked(task, 'done');

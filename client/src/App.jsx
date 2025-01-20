@@ -6,7 +6,6 @@ import axios from 'axios';
 const App = () => {
   const [appInitialised, setInitialised] = useState(false);
   const [formData, setFormData] = useState({});
-  const [editData, setEditData] = useState({});
   const [finishedTasks, setFinishedTasks] = useState([{}]);
   const [unfinishedTasks, setUnfinishedTasks] = useState([{}]);
 
@@ -75,14 +74,10 @@ const App = () => {
       .catch((error) => console.log('Unable to delete: ' + error));
   };
 
-  const editClicked = (data) => {
-    setEditData(data);
-  };
-
   return (
     <>
       <div className="mb-5">
-        <TaskForm getFormData={handleFormSubmission} editData={editData} />
+        <TaskForm getFormData={handleFormSubmission} />
       </div>
       <div>
         <TaskTable
@@ -90,7 +85,6 @@ const App = () => {
           finishedTasks={finishedTasks}
           buttonClicked={buttonClicked}
           deleteClicked={deleteClicked}
-          editClicked={editClicked}
         />
       </div>
     </>
