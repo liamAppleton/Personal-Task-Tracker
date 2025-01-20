@@ -43,7 +43,7 @@ router.put('/:id', async (req, res) => {
 
   try {
     const updatedFields = {};
-    const allowedFields = ['title', 'description', 'status'];
+    const allowedFields = ['title', 'description', 'status', 'dueDate'];
 
     for (let field of allowedFields) {
       if (req.body[field] !== undefined) {

@@ -41,12 +41,12 @@ const App = () => {
   };
 
   const axiosPut = async (data, updatedData = {}) => {
-    console.log('Axios put func: ', data, updatedData);
+    console.log('axiosPut: ', data, updatedData);
     await axios
       .put(`http://localhost:3000/api/tasks/${data._id}`, updatedData)
       .then((response) => {
         fetchData();
-        console.log('Put request recieved ' + response);
+        console.log('Put request recieved ', response);
       })
       .catch((error) => console.log('Put request unsuccessful: ' + error));
   };
@@ -73,7 +73,6 @@ const App = () => {
   };
 
   const handleUpdate = (data) => {
-    console.log('Handle update func: ', data);
     axiosPut(data, data.updated);
   };
 

@@ -1,5 +1,4 @@
-import { description } from 'joi/lib/types/alternatives';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const TaskTable = ({
   unfinishedTasks,
@@ -8,24 +7,28 @@ const TaskTable = ({
   deleteClicked,
   handleUpdate,
 }) => {
+  const [unfinTasks, setUnfinTasks] = useState([{}]);
   const [edit, setEdit] = useState({
     _id: 0,
     edit: false,
   });
 
   const handleKeyDown = (data) => {
-    console.log('handkeydown func: ', data);
     handleUpdate(data);
 
     setEdit({ _id: 0, edit: false, key: '' });
   };
+
+  useEffect(() => {
+    setUnfinTasks(unfinishedTasks);
+  }, [unfinishedTasks]);
 
   return (
     <>
       <div className="mb-3">
         <h1>To do</h1>
       </div>
-      {unfinishedTasks.length > 0 ? (
+      {unfinTasks.length > 0 ? (
         <table className="table table-info">
           <thead>
             <tr>
@@ -36,7 +39,7 @@ const TaskTable = ({
             </tr>
           </thead>
           <tbody>
-            {unfinishedTasks.map((task) => {
+            {unfinTasks.map((task) => {
               return (
                 <tr key={task._id || task.title}>
                   <td
@@ -111,14 +114,11 @@ const TaskTable = ({
                         value={task.dueDate}
                         onChange={(e) => {
                           task.dueDate = e.target.value;
-                        }}
-                        onKeyDown={(e) =>
-                          e.key === 'Enter' &&
                           handleKeyDown({
                             updated: { dueDate: task.dueDate },
                             _id: task.id,
-                          })
-                        }
+                          });
+                        }}
                       />
                     ) : (
                       task.dueDate
