@@ -85,7 +85,7 @@ const TaskTable = ({
                           editClicked(task);
                         }}
                       >
-                        Edit
+                        {edit.edit ? 'Update' : 'Edit'}
                       </button>
                       <button
                         className="btn btn-success"

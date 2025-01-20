@@ -1,1 +1,2 @@
 Fix post reqest bug when edit is confirmed.
+Fix initial form add doesn't always update properly.

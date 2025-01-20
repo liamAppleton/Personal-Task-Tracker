@@ -19,10 +19,13 @@ const TaskForm = ({ getFormData }) => {
   };
 
   const handleSubmit = () => {
+    const date = dateRef.current.value
+      ? new Date(dateRef.current.value).toISOString().split('T')[0]
+      : '';
     const inputs = {
       title: taskRef.current.value,
       description: descriptionRef.current.value,
-      dueDate: new Date(dateRef.current.value).toISOString().split('T')[0],
+      dueDate: date,
       status: 'unfinished',
     };
 
