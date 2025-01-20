@@ -16,6 +16,17 @@ const TaskTable = ({
     console.log('Unfinished tasks: ', unfinishedTasks);
   }, [unfinishedTasks]);
 
+  const handleEditClick = (data) => {
+    if (edit.edit) {
+      const task = unfinishedTasks.find((t) => t._id === data._id);
+      unfinishedTasks.task = { ...data, amended: true };
+      setEdit({ _id: 0, edit: false });
+      return;
+    }
+
+    setEdit({ _id: data._id, edit: true });
+  };
+
   return (
     <>
       <div className="mb-3">
@@ -40,7 +51,10 @@ const TaskTable = ({
                       <input
                         className="form-control"
                         type="text"
-                        value={task.title}
+                        placeholder={task.title}
+                        onChange={(e) => {
+                          task.title = e.target.value;
+                        }}
                       />
                     ) : (
                       task.title
@@ -52,7 +66,10 @@ const TaskTable = ({
                         <input
                           className="form-control"
                           type="text"
-                          value={task.description}
+                          placeholder={task.description}
+                          onChange={(e) => {
+                            task.description = e.target.value;
+                          }}
                         />
                       ) : (
                         task.description
@@ -68,6 +85,9 @@ const TaskTable = ({
                           className="form-control"
                           type="date"
                           value={task.dueDate}
+                          onChange={(e) => {
+                            task.dueDate = e.target.value;
+                          }}
                         />
                       ) : (
                         task.dueDate
@@ -81,7 +101,7 @@ const TaskTable = ({
                       <button
                         className="btn btn-secondary me-2"
                         onClick={() => {
-                          setEdit({ _id: task._id, edit: true });
+                          handleEditClick(task);
                           editClicked(task);
                         }}
                       >
