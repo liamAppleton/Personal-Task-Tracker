@@ -41,7 +41,6 @@ const App = () => {
   };
 
   const axiosPut = async (data, updatedData = {}) => {
-    console.log('axiosPut: ', data, updatedData);
     await axios
       .put(`http://localhost:3000/api/tasks/${data._id}`, updatedData)
       .then((response) => {

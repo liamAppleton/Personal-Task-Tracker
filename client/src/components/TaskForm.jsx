@@ -1,22 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import { validateForm } from '../utils/utils';
 
 const TaskForm = ({ getFormData }) => {
   const [error, setError] = useState('');
   const taskRef = useRef(null);
   const descriptionRef = useRef(null);
   const dateRef = useRef(null);
-
-  const validateForm = ({ title, description, dueDate }) => {
-    const today = new Date();
-    if (title.length < 3) return 'Task must be at least 3 characters.';
-    if (title.length > 50) return 'Task cannot be more than 50 characters.';
-    if (description.length < 10)
-      return 'Description must be at least 10 characters.';
-    if (description.length > 70)
-      return 'Description cannot be more than 70 characters.';
-    if (dueDate < today) return 'Date cannot be in the past.';
-    return 'valid';
-  };
 
   const handleSubmit = () => {
     const date = dateRef.current.value

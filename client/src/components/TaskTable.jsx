@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { validateTask } from '../utils/utils';
 
 const TaskTable = ({
   unfinishedTasks,
@@ -12,11 +13,12 @@ const TaskTable = ({
     _id: 0,
     edit: false,
   });
+  const [error, setError] = useState('');
 
   const handleKeyDown = (data) => {
     handleUpdate(data);
 
-    setEdit({ _id: 0, edit: false, key: '' });
+    setEdit({ _id: 0, edit: false, key: '', value: '' });
   };
 
   useEffect(() => {
@@ -50,21 +52,37 @@ const TaskTable = ({
                     {edit.edit &&
                     edit._id === task._id &&
                     edit.key === task.title ? (
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder={task.title}
-                        onChange={(e) => {
-                          task.title = e.target.value;
-                        }}
-                        onKeyDown={(e) =>
-                          e.key === 'Enter' &&
-                          handleKeyDown({
-                            updated: { title: task.title },
-                            _id: task.id,
-                          })
-                        }
-                      />
+                      <form className="form-floating">
+                        <input
+                          id="floatingInputValue"
+                          className="form-control"
+                          type="text"
+                          onChange={(e) => {
+                            setEdit({ ...edit, value: e.target.value });
+                          }}
+                          onKeyDown={(e) => {
+                            const validate = validateTask({
+                              title: edit.value,
+                            });
+
+                            if (
+                              e.key === 'Enter' &&
+                              validateTask(edit.value) === 'valid'
+                            ) {
+                              handleKeyDown({
+                                updated: { title: edit.value },
+                                _id: task.id,
+                              });
+                              setError('');
+                            } else {
+                              setError(validateTask(task));
+                            }
+                          }}
+                        />
+                        <label htmlFor="floatingInputValue">
+                          {error ? error : task.title}
+                        </label>
+                      </form>
                     ) : (
                       task.title
                     )}
