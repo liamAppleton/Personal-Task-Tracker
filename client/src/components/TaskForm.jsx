@@ -1,23 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-const TaskForm = ({ getFormData, editData }) => {
+const TaskForm = ({ getFormData }) => {
   const [error, setError] = useState('');
-  const [edit, setEdit] = useState(false);
   const taskRef = useRef(null);
   const descriptionRef = useRef(null);
   const dateRef = useRef(null);
-
-  useEffect(() => {
-    if (editData && editData._id) {
-      setError('');
-      setEdit(true);
-
-      editData.amended = true;
-      taskRef.current.value = editData.title;
-      descriptionRef.current.value = editData.description;
-      dateRef.current.value = editData.dueDate.match(/^\d{4}\-\d{2}\-\d{2}/);
-    }
-  }, [editData]);
 
   const validateForm = ({ title, description, dueDate }) => {
     const today = new Date();
@@ -51,21 +38,11 @@ const TaskForm = ({ getFormData, editData }) => {
       if (inputs[item] === '') delete inputs[item];
     }
 
-    if (edit) getFormData(editData, inputs);
-    else getFormData(inputs);
+    getFormData(inputs);
 
-    setEdit(false);
     taskRef.current.value = '';
     descriptionRef.current.value = '';
     dateRef.current.value = '';
-  };
-
-  const cancelClicked = () => {
-    taskRef.current.value = '';
-    descriptionRef.current.value = '';
-    dateRef.current.value = '';
-
-    setEdit(false);
   };
 
   return (
@@ -107,17 +84,8 @@ const TaskForm = ({ getFormData, editData }) => {
         </div>
         <div className="d-flex flex-d-row">
           <button type="submit" className="btn btn-primary me-2">
-            {edit ? 'update' : 'add'}
+            Add
           </button>
-          {edit && (
-            <button
-              type="reset"
-              className="btn btn-danger"
-              onClick={cancelClicked}
-            >
-              Cancel
-            </button>
-          )}
         </div>
 
         {error && <p className="text-danger">{error}</p>}

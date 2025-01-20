@@ -33,8 +33,6 @@ const TaskTable = ({
           </thead>
           <tbody>
             {unfinishedTasks.map((task) => {
-              const formattedDate =
-                task.dueDate === undefined ? '' : task.dueDate;
               return (
                 <tr key={task._id || task.title}>
                   <td>
@@ -64,15 +62,15 @@ const TaskTable = ({
                     )}
                   </td>
                   <td>
-                    {formattedDate ? (
+                    {task.dueDate ? (
                       edit.edit && edit._id === task._id ? (
                         <input
                           className="form-control"
                           type="date"
-                          value={formattedDate}
+                          value={task.dueDate}
                         />
                       ) : (
-                        formattedDate
+                        task.dueDate
                       )
                     ) : (
                       ''
