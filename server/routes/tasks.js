@@ -53,7 +53,9 @@ router.put('/:id', async (req, res) => {
 
     const task = await Task.findByIdAndUpdate(
       req.params.id,
-      { $set: updatedFields },
+      {
+        $set: updatedFields,
+      },
       { new: true }
     );
 

@@ -24,7 +24,7 @@ const TaskTable = ({
       return;
     }
 
-    setEdit({ _id: data._id, edit: true });
+    setEdit({ _id: data._id, edit: true, key: '' });
   };
 
   return (
@@ -46,8 +46,14 @@ const TaskTable = ({
             {unfinishedTasks.map((task) => {
               return (
                 <tr key={task._id || task.title}>
-                  <td>
-                    {edit.edit && edit._id === task._id ? (
+                  <td
+                    onClick={() => {
+                      setEdit({ _id: task.id, edit: true, key: task.title });
+                    }}
+                  >
+                    {edit.edit &&
+                    edit._id === task._id &&
+                    edit.key === task.title ? (
                       <input
                         className="form-control"
                         type="text"
@@ -55,20 +61,36 @@ const TaskTable = ({
                         onChange={(e) => {
                           task.title = e.target.value;
                         }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') handleEditClick(task);
+                        }}
                       />
                     ) : (
                       task.title
                     )}
                   </td>
-                  <td>
+                  <td
+                    onClick={() => {
+                      setEdit({
+                        _id: task.id,
+                        edit: true,
+                        key: task.description,
+                      });
+                    }}
+                  >
                     {task.description ? (
-                      edit.edit && edit._id === task._id ? (
+                      edit.edit &&
+                      edit._id === task._id &&
+                      edit.key === task.description ? (
                         <input
                           className="form-control"
                           type="text"
                           placeholder={task.description}
                           onChange={(e) => {
                             task.description = e.target.value;
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleEditClick(task);
                           }}
                         />
                       ) : (
@@ -78,15 +100,24 @@ const TaskTable = ({
                       ''
                     )}
                   </td>
-                  <td>
+                  <td
+                    onClick={() => {
+                      setEdit({ _id: task.id, edit: true, key: task.dueDate });
+                    }}
+                  >
                     {task.dueDate ? (
-                      edit.edit && edit._id === task._id ? (
+                      edit.edit &&
+                      edit._id === task._id &&
+                      edit.key === task.dueDate ? (
                         <input
                           className="form-control"
                           type="date"
                           value={task.dueDate}
                           onChange={(e) => {
                             task.dueDate = e.target.value;
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleEditClick(task);
                           }}
                         />
                       ) : (

@@ -10,11 +10,11 @@ const TaskForm = ({ getFormData }) => {
     const today = new Date();
     if (title.length < 3) return 'Task must be at least 3 characters.';
     if (title.length > 50) return 'Task cannot be more than 50 characters.';
-    if (description && description.length < 10)
+    if (description.length < 10)
       return 'Description must be at least 10 characters.';
-    if (description && description.length > 70)
+    if (description.length > 70)
       return 'Description cannot be more than 70 characters.';
-    if (dueDate && dueDate < today) return 'Date cannot be in the past.';
+    if (dueDate < today) return 'Date cannot be in the past.';
     return 'valid';
   };
 
