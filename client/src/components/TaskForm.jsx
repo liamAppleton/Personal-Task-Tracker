@@ -71,6 +71,7 @@ const TaskForm = ({ getFormData }) => {
             ref={dateRef}
             id="date-due"
             type="date"
+            min={new Date().toISOString().split('T')[0]}
             className="input-group date"
           />
         </div>
