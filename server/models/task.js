@@ -17,6 +17,7 @@ const Task = new mongoose.model(
         },
       },
       status: { type: String },
+      user: { type: String },
     },
     {
       toJSON: { getters: true }, // Ensure getters are used in JSON output
@@ -33,6 +34,7 @@ const validateTask = (task) => {
       .greater('now')
       .messages({ 'date.greater': 'Due date must be in the future' }),
     status: Joi.string(),
+    user: Joi.string(),
   });
 
   return schema.validate(task);

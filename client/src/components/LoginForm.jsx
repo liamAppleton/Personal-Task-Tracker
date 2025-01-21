@@ -37,8 +37,9 @@ const LoginForm = ({ userData, login }) => {
           e.preventDefault();
 
           const validate = validateLogin(formData.username, formData.password);
+          const dataPackage = { valid: validate, username: formData.username };
 
-          login(validate);
+          login(dataPackage);
         }}
       >
         <div className="form-floating mb-3">

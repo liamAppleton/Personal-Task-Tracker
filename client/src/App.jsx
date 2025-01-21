@@ -7,6 +7,7 @@ import axios from 'axios';
 const App = () => {
   const [appInitialised, setInitialised] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState('');
   const [userData, setUserData] = useState([{}]);
   const [formData, setFormData] = useState({});
   const [finishedTasks, setFinishedTasks] = useState([{}]);
@@ -14,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     fetchTaskData();
-  }, [formData]);
+  }, [formData, loggedIn]);
 
   useEffect(() => {
     fetchUserData();
@@ -35,7 +36,10 @@ const App = () => {
   }, [formData]);
 
   const handleLogin = (data) => {
-    if (data === 'valid') setLoggedIn(true);
+    if (data.valid === 'valid') {
+      setCurrentUser(data.username);
+      setLoggedIn(true);
+    }
   };
 
   const fetchUserData = async () => {
@@ -53,10 +57,10 @@ const App = () => {
       .get('http://localhost:3000/api/tasks', formData)
       .then((response) => {
         console.log('Tasks fetched...', response.data);
-        setFinishedTasks(response.data.filter((t) => t.status === 'finished'));
-        setUnfinishedTasks(
-          response.data.filter((t) => t.status === 'unfinished')
-        );
+        const tasks = response.data.filter((t) => t.user === currentUser);
+        console.log('Filtered tasks: ', tasks);
+        setFinishedTasks(tasks.filter((t) => t.status === 'finished'));
+        setUnfinishedTasks(tasks.filter((t) => t.status === 'unfinished'));
       })
       .catch((error) => console.log(error));
   };
@@ -113,7 +117,10 @@ const App = () => {
             </button>
           </div>
           <div className="mb-5">
-            <TaskForm getFormData={handleFormSubmission} />
+            <TaskForm
+              getFormData={handleFormSubmission}
+              currentUser={currentUser}
+            />
           </div>
           <div>
             <TaskTable

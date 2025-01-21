@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { validateForm } from '../utils/utils';
 
-const TaskForm = ({ getFormData }) => {
+const TaskForm = ({ getFormData, currentUser }) => {
   const [error, setError] = useState('');
   const taskRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -16,6 +16,7 @@ const TaskForm = ({ getFormData }) => {
       description: descriptionRef.current.value,
       dueDate: date,
       status: 'unfinished',
+      user: currentUser,
     };
 
     const validation = validateForm(inputs);
