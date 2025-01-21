@@ -86,7 +86,7 @@ const TaskTable = ({
                               : 'floatingInputValue'
                           }
                         >
-                          {error ? 'Invalid input' : task.title}
+                          {error ? 'Invalid input' : 'Edit task'}
                         </label>
                       </form>
                     ) : (
@@ -145,7 +145,7 @@ const TaskTable = ({
                               : 'floatingInputValue'
                           }
                         >
-                          {error ? 'Invalid input' : task.title}
+                          {error ? 'Invalid input' : 'Edit description'}
                         </label>
                       </form>
                     ) : (
@@ -164,6 +164,7 @@ const TaskTable = ({
                         className="form-control"
                         type="date"
                         value={task.dueDate}
+                        min={new Date().toISOString().split('T')[0]}
                         onChange={(e) => {
                           task.dueDate = e.target.value;
                           handleKeyDown({
