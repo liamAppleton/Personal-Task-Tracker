@@ -9,10 +9,7 @@ const TaskTable = ({
   handleUpdate,
 }) => {
   const [unfinTasks, setUnfinTasks] = useState([{}]);
-  const [edit, setEdit] = useState({
-    _id: 0,
-    edit: false,
-  });
+  const [edit, setEdit] = useState({ _id: 0, edit: false });
   const [error, setError] = useState('');
 
   const handleKeyDown = (data) => {
@@ -54,33 +51,42 @@ const TaskTable = ({
                     edit.key === task.title ? (
                       <form className="form-floating">
                         <input
-                          id="floatingInputValue"
-                          className="form-control"
+                          id={
+                            error
+                              ? 'floatingInputInvalid'
+                              : 'floatingInputValue'
+                          }
+                          className={
+                            error ? 'form-control is-invalid' : 'form-control'
+                          }
                           type="text"
-                          onChange={(e) => {
-                            setEdit({ ...edit, value: e.target.value });
-                          }}
                           onKeyDown={(e) => {
-                            const validate = validateTask({
-                              title: edit.value,
-                            });
+                            const currentValue = e.target.value;
 
                             if (
                               e.key === 'Enter' &&
-                              validateTask(edit.value) === 'valid'
+                              validateTask({ title: currentValue }) === 'valid'
                             ) {
                               handleKeyDown({
-                                updated: { title: edit.value },
+                                updated: { title: currentValue },
                                 _id: task.id,
                               });
                               setError('');
-                            } else {
-                              setError(validateTask(task));
+                              e.preventDefault();
+                            } else if (e.key === 'Enter') {
+                              setError(validateTask({ title: currentValue }));
+                              e.preventDefault();
                             }
                           }}
                         />
-                        <label htmlFor="floatingInputValue">
-                          {error ? error : task.title}
+                        <label
+                          htmlFor={
+                            error
+                              ? 'floatingInputInvalid'
+                              : 'floatingInputValue'
+                          }
+                        >
+                          {error ? 'Invalid input' : task.title}
                         </label>
                       </form>
                     ) : (
@@ -99,21 +105,49 @@ const TaskTable = ({
                     {edit.edit &&
                     edit._id === task._id &&
                     edit.key === task.description ? (
-                      <input
-                        className="form-control"
-                        type="text"
-                        placeholder={task.description}
-                        onChange={(e) => {
-                          task.description = e.target.value;
-                        }}
-                        onKeyDown={(e) =>
-                          e.key === 'Enter' &&
-                          handleKeyDown({
-                            updated: { description: task.description },
-                            _id: task.id,
-                          })
-                        }
-                      />
+                      <form className="form-floating">
+                        <input
+                          id={
+                            error
+                              ? 'floatingInputInvalid'
+                              : 'floatingInputValue'
+                          }
+                          className={
+                            error ? 'form-control is-invalid' : 'form-control'
+                          }
+                          type="text"
+                          onKeyDown={(e) => {
+                            const currentValue = e.target.value;
+
+                            if (
+                              e.key === 'Enter' &&
+                              validateTask({ description: currentValue }) ===
+                                'valid'
+                            ) {
+                              handleKeyDown({
+                                updated: { description: currentValue },
+                                _id: task.id,
+                              });
+                              setError('');
+                              e.preventDefault();
+                            } else if (e.key === 'Enter') {
+                              setError(
+                                validateTask({ description: currentValue })
+                              );
+                              e.preventDefault();
+                            }
+                          }}
+                        />
+                        <label
+                          htmlFor={
+                            error
+                              ? 'floatingInputInvalid'
+                              : 'floatingInputValue'
+                          }
+                        >
+                          {error ? 'Invalid input' : task.title}
+                        </label>
+                      </form>
                     ) : (
                       task.description
                     )}
