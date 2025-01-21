@@ -2,8 +2,8 @@ require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 const tasks = require('./routes/tasks');
+const users = require('./routes/users');
 const mongoose = require('mongoose');
-const { Task } = require('./models/task');
 const app = express();
 
 app.use(
@@ -13,6 +13,7 @@ app.use(
 );
 app.use(express.json());
 app.use('/api/tasks', tasks);
+app.use('/api/users', users);
 
 const connectMongoose = async () => {
   const port = process.env.PORT || 3000;

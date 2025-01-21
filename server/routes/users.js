@@ -1,48 +1,46 @@
 const express = require('express');
 const router = express.Router();
-const { Task, validateTask } = require('../models/task');
+const { User, validateUser } = require('../models/user');
 
 router.get('/', async (req, res) => {
-  const tasks = await Task.find();
-  res.send(tasks);
+  const users = await User.find();
+  res.send(users);
 });
 
 router.get('/:id', async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id);
+    const user = await User.findById(req.params.id);
 
-    res.send(task);
+    res.send(user);
   } catch (error) {
     return res.status(404).send('ID not valid');
   }
 });
 
 router.post('/', async (req, res) => {
-  const { error } = validateTask(req.body);
+  const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    let task = new Task({
-      title: req.body.title,
-      description: req.body.description,
-      dueDate: req.body.dueDate,
-      status: 'unfinished',
+    let user = new User({
+      username: req.body.username,
+      password: req.body.password,
     });
-    task = await task.save();
+    user = await user.save();
 
-    res.send(task);
+    res.send(user);
   } catch (error) {
     res.status(500).send('Please enter all required fields.');
   }
 });
 
 router.put('/:id', async (req, res) => {
-  const { error } = validateTask(req.body);
+  const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
     const updatedFields = {};
-    const allowedFields = ['title', 'description', 'status', 'dueDate'];
+    const allowedFields = ['username', 'password'];
 
     for (let field of allowedFields) {
       if (req.body[field] !== undefined) {
@@ -50,7 +48,7 @@ router.put('/:id', async (req, res) => {
       }
     }
 
-    const task = await Task.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
       req.params.id,
       {
         $set: updatedFields,
@@ -58,7 +56,7 @@ router.put('/:id', async (req, res) => {
       { new: true }
     );
 
-    res.send(task);
+    res.send(user);
   } catch (error) {
     return res.status(404).send('ID not valid');
   }
@@ -66,9 +64,9 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const task = await Task.findByIdAndDelete(req.params.id);
+    const user = await User.findByIdAndDelete(req.params.id);
 
-    res.send(task);
+    res.send(user);
   } catch (error) {
     return res.status(404).send('ID not valid');
   }
