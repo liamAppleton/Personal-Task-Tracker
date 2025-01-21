@@ -6,6 +6,7 @@ import axios from 'axios';
 
 const App = () => {
   const [appInitialised, setInitialised] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState([{}]);
   const [formData, setFormData] = useState({});
   const [finishedTasks, setFinishedTasks] = useState([{}]);
@@ -32,6 +33,11 @@ const App = () => {
 
     fetchTaskData();
   }, [formData]);
+
+  const handleLogin = (data) => {
+    console.log('Handle login: ', data);
+    if (data === 'valid') setLoggedIn(true);
+  };
 
   const fetchUserData = async () => {
     await axios
@@ -93,22 +99,26 @@ const App = () => {
 
   return (
     <>
-      <div className="mb-5">
-        <LoginForm userData={userData} />
-      </div>
-
-      <div className="mb-5">
-        <TaskForm getFormData={handleFormSubmission} />
-      </div>
-      <div>
-        <TaskTable
-          unfinishedTasks={unfinishedTasks}
-          finishedTasks={finishedTasks}
-          buttonClicked={buttonClicked}
-          deleteClicked={deleteClicked}
-          handleUpdate={handleUpdate}
-        />
-      </div>
+      {loggedIn === false ? (
+        <div className="mb-5">
+          <LoginForm userData={userData} login={handleLogin} />
+        </div>
+      ) : (
+        <>
+          <div className="mb-5">
+            <TaskForm getFormData={handleFormSubmission} />
+          </div>
+          <div>
+            <TaskTable
+              unfinishedTasks={unfinishedTasks}
+              finishedTasks={finishedTasks}
+              buttonClicked={buttonClicked}
+              deleteClicked={deleteClicked}
+              handleUpdate={handleUpdate}
+            />
+          </div>
+        </>
+      )}
     </>
   );
 };

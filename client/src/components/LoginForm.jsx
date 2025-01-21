@@ -1,31 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-const LoginForm = ({ userData }) => {
+const LoginForm = ({ userData, login }) => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    console.log('Login form: ', userData);
-  }, [userData]);
+  const validateLogin = (username, password) => {
+    let usernameValid = false;
 
-  const validateLogin = ({ username, password }) => {
-    let index;
-    for (let user of userData) {
-      if (user.username === username) {
-        index = userData.indexOf(user);
+    const user = userData.find((u) => u.username === username) || false;
+    let pw;
+    if (!user) {
+      setFormData({ ...formData, username: '' });
+      setError('Invalid username');
+      setTimeout(() => setError(''), 1000);
+    } else {
+      pw = password === user.password ? password : false;
+
+      if (!pw) {
+        setFormData({ ...formData, password: '' });
+        setError('Invalid password');
+        setTimeout(() => setError(''), 1000);
       }
     }
 
-    if (userData[index].password !== password) {
-      setError('Invalid password');
-      return;
-    }
+    console.log('User valid: ', user);
+    console.log('Password valid: ', pw);
 
-    setError('');
-    return 'valid';
+    return user && pw ? 'valid' : 'invalid';
   };
-
-  const handleSubmit = (e) => {};
 
   return (
     <>
@@ -36,10 +38,11 @@ const LoginForm = ({ userData }) => {
       <form
         className="form-floating"
         onSubmit={(e) => {
-          const validation = validateLogin(formData);
-          if (validation !== 'valid') {
-            e.preventDefault();
-          }
+          e.preventDefault();
+          console.log('username: ', formData.username);
+          console.log('password: ', formData.password);
+          const validate = validateLogin(formData.username, formData.password);
+          console.log(validate);
         }}
       >
         <div className="form-floating mb-3">
