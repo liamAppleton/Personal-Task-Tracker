@@ -5,10 +5,9 @@ const LoginForm = ({ userData, login }) => {
   const [error, setError] = useState('');
 
   const validateLogin = (username, password) => {
-    let usernameValid = false;
-
     const user = userData.find((u) => u.username === username) || false;
     let pw;
+
     if (!user) {
       setFormData({ ...formData, username: '' });
       setError('Invalid username');
@@ -23,9 +22,6 @@ const LoginForm = ({ userData, login }) => {
       }
     }
 
-    console.log('User valid: ', user);
-    console.log('Password valid: ', pw);
-
     return user && pw ? 'valid' : 'invalid';
   };
 
@@ -39,10 +35,10 @@ const LoginForm = ({ userData, login }) => {
         className="form-floating"
         onSubmit={(e) => {
           e.preventDefault();
-          console.log('username: ', formData.username);
-          console.log('password: ', formData.password);
+
           const validate = validateLogin(formData.username, formData.password);
-          console.log(validate);
+
+          login(validate);
         }}
       >
         <div className="form-floating mb-3">

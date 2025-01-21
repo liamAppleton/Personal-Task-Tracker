@@ -35,7 +35,6 @@ const App = () => {
   }, [formData]);
 
   const handleLogin = (data) => {
-    console.log('Handle login: ', data);
     if (data === 'valid') setLoggedIn(true);
   };
 
@@ -105,6 +104,14 @@ const App = () => {
         </div>
       ) : (
         <>
+          <div className="mb-3">
+            <button
+              className="btn btn-danger"
+              onClick={() => setLoggedIn(false)}
+            >
+              Log out
+            </button>
+          </div>
           <div className="mb-5">
             <TaskForm getFormData={handleFormSubmission} />
           </div>
