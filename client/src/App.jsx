@@ -6,13 +6,18 @@ import axios from 'axios';
 
 const App = () => {
   const [appInitialised, setInitialised] = useState(false);
+  const [userData, setUserData] = useState([{}]);
   const [formData, setFormData] = useState({});
   const [finishedTasks, setFinishedTasks] = useState([{}]);
   const [unfinishedTasks, setUnfinishedTasks] = useState([{}]);
 
   useEffect(() => {
-    fetchData();
+    fetchTaskData();
   }, [formData]);
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     if (!appInitialised) {
@@ -22,17 +27,27 @@ const App = () => {
     console.log('Post: ', formData);
     axios
       .post('http://localhost:3000/api/tasks', formData)
-      .then((response) => console.log('Post recieved ', response))
+      .then((response) => console.log('Post recieved ', response.data))
       .catch((error) => console.log('Post unsuccessful: ' + error));
 
-    fetchData();
+    fetchTaskData();
   }, [formData]);
 
-  const fetchData = async () => {
+  const fetchUserData = async () => {
+    await axios
+      .get('http://localhost:3000/api/users')
+      .then((response) => {
+        console.log('Users fetched...', response.data);
+        setUserData(response.data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const fetchTaskData = async () => {
     await axios
       .get('http://localhost:3000/api/tasks', formData)
       .then((response) => {
-        console.log('Data fetched...');
+        console.log('Tasks fetched...', response.data);
         setFinishedTasks(response.data.filter((t) => t.status === 'finished'));
         setUnfinishedTasks(
           response.data.filter((t) => t.status === 'unfinished')
@@ -45,7 +60,7 @@ const App = () => {
     await axios
       .put(`http://localhost:3000/api/tasks/${data._id}`, updatedData)
       .then((response) => {
-        fetchData();
+        fetchTaskData();
         console.log('Put request recieved ', response);
       })
       .catch((error) => console.log('Put request unsuccessful: ' + error));
@@ -66,7 +81,7 @@ const App = () => {
     axios
       .delete(`http://localhost:3000/api/tasks/${data._id}`)
       .then((response) => {
-        fetchData();
+        fetchTaskData();
         console.log('Item deleted successfully.');
       })
       .catch((error) => console.log('Unable to delete: ' + error));
@@ -79,7 +94,7 @@ const App = () => {
   return (
     <>
       <div className="mb-5">
-        <LoginForm />
+        <LoginForm userData={userData} />
       </div>
 
       <div className="mb-5">

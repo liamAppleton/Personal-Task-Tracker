@@ -1,6 +1,22 @@
-import React from 'react';
+import { useEffect } from 'react';
 
-const LoginForm = () => {
+const LoginForm = ({ userData }) => {
+  useEffect(() => {
+    console.log('Login form: ', userData);
+  }, [userData]);
+
+  const validateLogin = ({ username, password }) => {
+    let currentUser;
+    for (let user of userData) {
+      if (user.username === username) {
+        currentUser = user;
+      }
+    }
+
+    if (currentUser.password !== password) return 'Invalid password';
+    return 'valid';
+  };
+
   return (
     <>
       <div className="mb-3">
