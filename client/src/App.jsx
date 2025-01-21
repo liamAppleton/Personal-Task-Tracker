@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import LoginForm from './components/LoginForm';
 import TaskForm from './components/TaskForm';
 import TaskTable from './components/TaskTable';
 import axios from 'axios';
@@ -77,6 +78,10 @@ const App = () => {
 
   return (
     <>
+      <div className="mb-5">
+        <LoginForm />
+      </div>
+
       <div className="mb-5">
         <TaskForm getFormData={handleFormSubmission} />
       </div>
