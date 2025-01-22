@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import styles from './createUserForm.module.css';
 
-const CreateUserForm = ({ newUser }) => {
+const CreateUserForm = ({ newUser, accountCreation }) => {
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     username: '',
@@ -37,57 +38,68 @@ const CreateUserForm = ({ newUser }) => {
       <div className="mb-3">
         <h3>Create account</h3>
       </div>
-      <form
-        className="form-floating"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit(formData);
-        }}
-      >
-        <div className="form-floating mb-3">
-          <input
-            type="text"
-            className="form-control"
-            id="floatingInput"
-            placeholder="Enter a username"
-            value={formData.username}
-            onChange={(e) =>
-              setFormData({ ...formData, username: e.target.value })
-            }
-          />
-          <label htmlFor="floatingInput">Enter a username</label>
+      <div className="mb-3">
+        <form
+          className="form-floating"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(formData);
+            accountCreation(false);
+          }}
+        >
+          <div className="form-floating mb-3">
+            <input
+              type="text"
+              className="form-control"
+              id="floatingInput"
+              placeholder="Enter a username"
+              value={formData.username}
+              onChange={(e) =>
+                setFormData({ ...formData, username: e.target.value })
+              }
+            />
+            <label htmlFor="floatingInput">Enter a username</label>
+          </div>
+          <div className="form-floating mb-3">
+            <input
+              type="password"
+              className="form-control"
+              id="floatingPassword"
+              placeholder="Enter a password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+            />
+            <label htmlFor="floatingPassword">Enter a password</label>
+          </div>
+          <div className="form-floating mb-3">
+            <input
+              type="password"
+              className="form-control"
+              id="floatingPassword2"
+              placeholder="Confirm password"
+              value={formData.confirmPassword}
+              onChange={(e) =>
+                setFormData({ ...formData, confirmPassword: e.target.value })
+              }
+            />
+            <label htmlFor="floatingPassword2">Confirm password</label>
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Create account
+          </button>
+        </form>
+      </div>
+      {error && (
+        <div className="mb-3">
+          <p className="text-danger">{error}</p>
         </div>
-        <div className="form-floating mb-3">
-          <input
-            type="password"
-            className="form-control"
-            id="floatingPassword"
-            placeholder="Enter a password"
-            value={formData.password}
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
-          />
-          <label htmlFor="floatingPassword">Enter a password</label>
-        </div>
-        <div className="form-floating mb-3">
-          <input
-            type="password"
-            className="form-control"
-            id="floatingPassword2"
-            placeholder="Confirm password"
-            value={formData.confirmPassword}
-            onChange={(e) =>
-              setFormData({ ...formData, confirmPassword: e.target.value })
-            }
-          />
-          <label htmlFor="floatingPassword2">Confirm password</label>
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Create account
-        </button>
-      </form>
-      {error && <p className="text-danger">{error}</p>}
+      )}
+
+      <p onClick={() => accountCreation(false)} className={styles.backLink}>
+        Back to login
+      </p>
     </>
   );
 };

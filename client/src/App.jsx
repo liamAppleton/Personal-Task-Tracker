@@ -8,6 +8,7 @@ import axios from 'axios';
 const App = () => {
   const [appInitialised, setInitialised] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [accountCreation, setCreation] = useState(false);
   const [currentUser, setCurrentUser] = useState('');
   const [userData, setUserData] = useState([{}]);
   const [formData, setFormData] = useState({});
@@ -44,10 +45,15 @@ const App = () => {
   };
 
   const handleCreateUser = async (data) => {
-    await axios
-      .post('http://localhost:3000/api/users', data)
-      .then((response) => console.log('Post recieved', response.data))
-      .catch((error) => console.log('Post unsuccesful: ', error));
+    try {
+      await axios
+        .post('http://localhost:3000/api/users', data)
+        .then((response) => console.log('Post recieved', response.data))
+        .catch((error) => console.log('Post unsuccesful: ', error));
+      await fetchUserData();
+    } catch (error) {
+      console.log(error.messsage);
+    }
   };
 
   const fetchUserData = async () => {
@@ -69,7 +75,6 @@ const App = () => {
           .filter((t) => t.user === currentUser)
           .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
 
-        console.log('Filtered, sorted tasks: ', tasks);
         setFinishedTasks(tasks.filter((t) => t.status === 'finished'));
         setUnfinishedTasks(tasks.filter((t) => t.status === 'unfinished'));
       })
@@ -110,16 +115,29 @@ const App = () => {
     axiosPut(data, data.updated);
   };
 
+  const accountCreationPageSwitch = (bool) => {
+    bool === true ? setCreation(true) : setCreation(false);
+  };
+
   return (
     <>
-      <div className="mb-5">
-        <CreateUserForm newUser={handleCreateUser} />
-      </div>
-
       {loggedIn === false ? (
-        <div className="mb-5">
-          <LoginForm userData={userData} login={handleLogin} />
-        </div>
+        accountCreation === false ? (
+          <div className="mb-5">
+            <LoginForm
+              userData={userData}
+              login={handleLogin}
+              accountCreation={accountCreationPageSwitch}
+            />
+          </div>
+        ) : (
+          <div className="mb-5">
+            <CreateUserForm
+              newUser={handleCreateUser}
+              accountCreation={accountCreationPageSwitch}
+            />
+          </div>
+        )
       ) : (
         <>
           <div className="mb-3">
