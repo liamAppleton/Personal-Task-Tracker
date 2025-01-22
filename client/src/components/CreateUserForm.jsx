@@ -10,6 +10,7 @@ const CreateUserForm = ({ newUser, accountCreation }) => {
   });
 
   const validateLogin = ({ username, password, confirmPassword }) => {
+    console.log(password, confirmPassword);
     if (username.length < 3 || username.length > 15)
       return 'Username must be between 3 and 15 characters.';
     if (password.length < 8 || password.length > 20)
@@ -20,12 +21,6 @@ const CreateUserForm = ({ newUser, accountCreation }) => {
   };
 
   const handleSubmit = (formData) => {
-    const validate = validateLogin(formData);
-    if (validate !== 'valid') {
-      setError(validate);
-      setTimeout(() => setError(''), 1000);
-      return;
-    }
     const createdUser = {
       username: formData.username,
       password: formData.password,
@@ -43,6 +38,14 @@ const CreateUserForm = ({ newUser, accountCreation }) => {
           className="form-floating"
           onSubmit={(e) => {
             e.preventDefault();
+
+            const validate = validateLogin(formData);
+            console.log(validate);
+            if (validate !== 'valid') {
+              setError(validate);
+              setTimeout(() => setError(''), 1000);
+              return;
+            }
             handleSubmit(formData);
             accountCreation(false);
           }}
