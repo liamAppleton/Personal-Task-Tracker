@@ -57,8 +57,11 @@ const App = () => {
       .get('http://localhost:3000/api/tasks', formData)
       .then((response) => {
         console.log('Tasks fetched...', response.data);
-        const tasks = response.data.filter((t) => t.user === currentUser);
-        console.log('Filtered tasks: ', tasks);
+        const tasks = response.data
+          .filter((t) => t.user === currentUser)
+          .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
+        console.log('Filtered, sorted tasks: ', tasks);
         setFinishedTasks(tasks.filter((t) => t.status === 'finished'));
         setUnfinishedTasks(tasks.filter((t) => t.status === 'unfinished'));
       })
@@ -76,7 +79,6 @@ const App = () => {
   };
 
   const handleFormSubmission = (data) => {
-    console.log('App formData upon submission: ', data);
     setFormData(data);
   };
 
