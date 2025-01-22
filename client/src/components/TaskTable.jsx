@@ -156,6 +156,12 @@ const TaskTable = ({
                     onClick={() => {
                       setEdit({ _id: task.id, edit: true, key: task.dueDate });
                     }}
+                    className={
+                      new Date(task.dueDate).setHours(0, 0, 0, 0) <
+                      new Date().setHours(0, 0, 0, 0)
+                        ? 'text-danger'
+                        : 'text'
+                    }
                   >
                     {edit.edit &&
                     edit._id === task._id &&

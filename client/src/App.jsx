@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import LoginForm from './components/LoginForm';
+import CreateUserForm from './components/CreateUserForm';
 import TaskForm from './components/TaskForm';
 import TaskTable from './components/TaskTable';
 import axios from 'axios';
@@ -40,6 +41,13 @@ const App = () => {
       setCurrentUser(data.username);
       setLoggedIn(true);
     }
+  };
+
+  const handleCreateUser = async (data) => {
+    await axios
+      .post('http://localhost:3000/api/users', data)
+      .then((response) => console.log('Post recieved', response.data))
+      .catch((error) => console.log('Post unsuccesful: ', error));
   };
 
   const fetchUserData = async () => {
@@ -104,6 +112,10 @@ const App = () => {
 
   return (
     <>
+      <div className="mb-5">
+        <CreateUserForm newUser={handleCreateUser} />
+      </div>
+
       {loggedIn === false ? (
         <div className="mb-5">
           <LoginForm userData={userData} login={handleLogin} />
