@@ -11,6 +11,7 @@ const TaskForm = ({ getFormData, currentUser }) => {
     const date = dateRef.current.value
       ? new Date(dateRef.current.value).toISOString().split('T')[0]
       : '';
+
     const inputs = {
       title: taskRef.current.value,
       description: descriptionRef.current.value,
@@ -43,7 +44,6 @@ const TaskForm = ({ getFormData, currentUser }) => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-
           handleSubmit();
         }}
       >

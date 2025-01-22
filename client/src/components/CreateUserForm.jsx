@@ -25,6 +25,7 @@ const CreateUserForm = ({ newUser, accountCreation }) => {
       username: formData.username,
       password: formData.password,
     };
+
     newUser(createdUser);
   };
 
@@ -40,12 +41,12 @@ const CreateUserForm = ({ newUser, accountCreation }) => {
             e.preventDefault();
 
             const validate = validateLogin(formData);
-            console.log(validate);
             if (validate !== 'valid') {
               setError(validate);
               setTimeout(() => setError(''), 1000);
               return;
             }
+
             handleSubmit(formData);
             accountCreation(false);
           }}

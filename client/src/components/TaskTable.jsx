@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { validateTask } from '../utils/utils';
+import { validateTableUpdate } from '../utils/utils';
 
 const TaskTable = ({
   unfinishedTasks,
@@ -65,7 +65,8 @@ const TaskTable = ({
 
                             if (
                               e.key === 'Enter' &&
-                              validateTask({ title: currentValue }) === 'valid'
+                              validateTableUpdate({ title: currentValue }) ===
+                                'valid'
                             ) {
                               handleKeyDown({
                                 updated: { title: currentValue },
@@ -74,7 +75,9 @@ const TaskTable = ({
                               setError('');
                               e.preventDefault();
                             } else if (e.key === 'Enter') {
-                              setError(validateTask({ title: currentValue }));
+                              setError(
+                                validateTableUpdate({ title: currentValue })
+                              );
                               e.preventDefault();
                             }
                           }}
@@ -121,8 +124,9 @@ const TaskTable = ({
 
                             if (
                               e.key === 'Enter' &&
-                              validateTask({ description: currentValue }) ===
-                                'valid'
+                              validateTableUpdate({
+                                description: currentValue,
+                              }) === 'valid'
                             ) {
                               handleKeyDown({
                                 updated: { description: currentValue },
@@ -132,7 +136,9 @@ const TaskTable = ({
                               e.preventDefault();
                             } else if (e.key === 'Enter') {
                               setError(
-                                validateTask({ description: currentValue })
+                                validateTableUpdate({
+                                  description: currentValue,
+                                })
                               );
                               e.preventDefault();
                             }
